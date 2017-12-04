@@ -12,6 +12,8 @@
 		D64DEF5D1FD5BE3500E1A147 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64DEF5B1FD5BE3500E1A147 /* Main.storyboard */; };
 		D64DEF5F1FD5BE3500E1A147 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D64DEF5E1FD5BE3500E1A147 /* Assets.xcassets */; };
 		D64DEF621FD5BE3500E1A147 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64DEF601FD5BE3500E1A147 /* LaunchScreen.storyboard */; };
+		D64DEF6A1FD5BEDB00E1A147 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DEF691FD5BEDB00E1A147 /* BluetoothManager.swift */; };
+		D64DEF6C1FD5C09800E1A147 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DEF6B1FD5C09800E1A147 /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		D64DEF5E1FD5BE3500E1A147 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D64DEF611FD5BE3500E1A147 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D64DEF631FD5BE3500E1A147 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D64DEF691FD5BEDB00E1A147 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		D64DEF6B1FD5C09800E1A147 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 		D64DEF561FD5BE3500E1A147 /* ConnectionTester */ = {
 			isa = PBXGroup;
 			children = (
+				D64DEF6B1FD5C09800E1A147 /* Logger.swift */,
+				D64DEF691FD5BEDB00E1A147 /* BluetoothManager.swift */,
 				D64DEF571FD5BE3500E1A147 /* AppDelegate.swift */,
 				D64DEF591FD5BE3500E1A147 /* ViewController.swift */,
 				D64DEF5B1FD5BE3500E1A147 /* Main.storyboard */,
@@ -137,7 +143,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D64DEF5A1FD5BE3500E1A147 /* ViewController.swift in Sources */,
+				D64DEF6A1FD5BEDB00E1A147 /* BluetoothManager.swift in Sources */,
 				D64DEF581FD5BE3500E1A147 /* AppDelegate.swift in Sources */,
+				D64DEF6C1FD5C09800E1A147 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
