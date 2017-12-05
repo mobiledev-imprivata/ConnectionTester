@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var connectionLabel: UILabel!
+    
     private var bluetoothManager: BluetoothManager!
 
     override func viewDidLoad() {
@@ -17,8 +19,11 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         bluetoothManager = BluetoothManager()
+        bluetoothManager.delegate = self
         
-        Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
+        Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [unowned self] _ in
+            self.connectionLabel.text = "Searching..."
+            self.connectionLabel.textColor = .orange
             self.bluetoothManager.go()
         }
     }
@@ -28,6 +33,27 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+
+extension ViewController: BluetoothManagerDelegate {
+    
+    func didConnect() {
+        log(#function)
+        connectionLabel.text = "Connected"
+        connectionLabel.textColor = .green
+    }
+    
+    func didDisconnect() {
+        log(#function)
+        connectionLabel.text = "Disconnected"
+        connectionLabel.textColor = .purple
+    }
+    
+    func didTimeout() {
+        log(#function)
+        connectionLabel.text = "Timed out"
+        connectionLabel.textColor = .red
+    }
 
 }
 

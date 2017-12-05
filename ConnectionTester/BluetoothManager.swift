@@ -9,6 +9,12 @@
 import Foundation
 import CoreBluetooth
 
+protocol BluetoothManagerDelegate {
+    func didConnect()
+    func didDisconnect()
+    func didTimeout()
+}
+
 final class BluetoothManager: NSObject {
     
     private let serviceUUID                  = CBUUID(string: "16884184-C1C4-4BD1-A8F1-6ADCB272B18B")
@@ -19,11 +25,13 @@ final class BluetoothManager: NSObject {
     
     private var centralManager: CBCentralManager!
     private var peripheral: CBPeripheral!
-    private var characteristic: CBCharacteristic!
+    // private var readCharacteristic: CBCharacteristic!
     
     private var isPoweredOn = false
     private var scanTimer: Timer!
     private var isBusy = false
+    
+    var delegate: BluetoothManagerDelegate?
     
     override init() {
         super.init()
@@ -56,14 +64,16 @@ final class BluetoothManager: NSObject {
         log("timed out")
         centralManager.stopScan()
         isBusy = false
+        delegate?.didTimeout()
     }
     
     private func disconnect() {
         log("disconnect")
         centralManager.cancelPeripheralConnection(peripheral)
         peripheral = nil
-        characteristic = nil
+        // readCharacteristic = nil
         isBusy = false
+        delegate?.didDisconnect()
     }
     
 }
@@ -115,9 +125,19 @@ extension BluetoothManager: CBPeripheralDelegate {
         let message = "peripheral didDiscoverServices " + (error == nil ? "ok" :  ("error " + error!.localizedDescription))
         log(message)
         guard error == nil else { return }
+        var isFound = false
         for service in peripheral.services! {
             log("service \(service.uuid)")
-            peripheral.discoverCharacteristics(nil, for: service)
+            if service.uuid == serviceUUID {
+                isFound = true
+                // peripheral.discoverCharacteristics(nil, for: service)
+            }
+        }
+        if isFound {
+            delegate?.didConnect()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.disconnect()
         }
     }
     
@@ -129,7 +149,7 @@ extension BluetoothManager: CBPeripheralDelegate {
             log("characteristic \(characteristic.uuid)")
             if characteristic.uuid == readCharacteristicUUID {
                 log("found readCharacteristicUUID")
-                self.characteristic = characteristic
+                // self.readCharacteristic = characteristic
                 peripheral.readValue(for: characteristic)
             } else if characteristic.uuid == subscribedCharacteristicUUID {
                 log("found subscribedCharacteristicUUID")
@@ -141,11 +161,14 @@ extension BluetoothManager: CBPeripheralDelegate {
         let message = "peripheral didUpdateValueFor characteristic " + (error == nil ? "\(characteristic.uuid) ok" :  ("error " + error!.localizedDescription))
         log(message)
         defer {
-            disconnect()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                self.disconnect()
+            }
         }
         guard error == nil else { return }
         let response = String(data: characteristic.value!, encoding: String.Encoding.utf8)!
         log("\(response)")
+        delegate?.didConnect()
     }
     
 }
